@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { formatRupiah } from "@/lib/utils";
-import { PricingItem } from "@/services/config";
+import type { PricingItem } from "@/services/config";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 

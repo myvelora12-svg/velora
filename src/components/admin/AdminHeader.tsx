@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAdminAction } from "@/app/actions/auth";
+import { CloverIcon } from "@/components/ui/CloverLogo";
 import { LayoutDashboard, Settings, LogOut, ExternalLink } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -20,12 +21,12 @@ export function AdminHeader() {
         <div className="hidden md:flex h-16 items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <Link href="/admin" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-xs font-bold text-primary-foreground shadow-xs">
-                R$
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#00b869] text-[#08100b] shadow-xs">
+                <CloverIcon className="h-5 w-5 text-[#08100b]" />
               </span>
               <div className="flex flex-col">
                 <span className="font-heading text-sm font-bold leading-tight tracking-tight">Admin Portal</span>
-                <span className="text-[10px] text-muted-foreground">BlackRedRoblox</span>
+                <span className="text-[10px] text-muted-foreground font-medium">cloverbux</span>
               </div>
             </Link>
 
@@ -87,10 +88,10 @@ export function AdminHeader() {
           {/* Top Row: Brand & Actions */}
           <div className="flex items-center justify-between gap-2">
             <Link href="/admin" className="flex items-center gap-2 min-w-0">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary font-heading text-xs font-bold text-primary-foreground">
-                R$
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#00b869] text-[#08100b]">
+                <CloverIcon className="h-4 w-4 text-[#08100b]" />
               </span>
-              <span className="font-heading text-sm font-bold truncate">Admin</span>
+              <span className="font-heading text-sm font-bold truncate">cloverbux Admin</span>
             </Link>
 
             <div className="flex items-center gap-1.5 shrink-0">

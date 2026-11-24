@@ -30,7 +30,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
   });
 
   const waLink = `https://wa.me/${order.whatsapp.replace(/^0/, "62")}?text=${encodeURIComponent(
-    `Halo ${order.name}, kami dari Admin BlackRedRoblox mengenai pesanan Anda (${order.orderId}).`,
+    `Halo ${order.name}, kami dari Admin cloverbux mengenai pesanan Anda (${order.orderId}).`,
   )}`;
 
   const accountText = order.gameZoneId

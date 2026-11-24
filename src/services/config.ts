@@ -14,6 +14,9 @@ export interface RekeningItem {
 }
 
 export async function getConfigValue<T>(key: string, defaultValue: T): Promise<T> {
+  if (!process.env.DATABASE_URL) {
+    return defaultValue;
+  }
   try {
     const row = await db.query.config.findFirst({
       where: eq(config.key, key),

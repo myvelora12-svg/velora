@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PricingItem, RekeningItem } from "@/services/config";
+import type { PricingItem, RekeningItem } from "@/services/config";
 import { createOrderAction, submitPaymentProofAction } from "@/app/actions/order";
 import { Step1Nominal } from "./Step1Nominal";
 import { Step2UserData } from "./Step2UserData";
@@ -126,7 +126,10 @@ export function CheckoutWizard({ initialRobux, pricing, rekeningList, qrImageUrl
         <Step4UploadProof
           orderId={createdOrder.orderId}
           proofToken={proofToken}
-          onSubmitProof={submitPaymentProofAction}
+          onSubmitProof={async (orderId, _proofUrl, token) => {
+            const res = await submitPaymentProofAction(orderId, token || proofToken);
+            return { ok: res.success, error: res.error };
+          }}
           onSuccess={() => setStep(5)}
         />
       )}

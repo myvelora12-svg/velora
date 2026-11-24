@@ -6,7 +6,7 @@ import { generateOrderId, generateOrderCode, generateUniqueCode, randomToken } f
 import { getConfigValue, PricingItem } from "@/services/config";
 import { DEFAULT_PRICING } from "@/services/defaults";
 import { eq } from "drizzle-orm";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 
 import { getGameConfig } from "@/lib/games";
 import { getDefaultPackagesForGame, UniversalGamePackage } from "@/services/defaults";
@@ -87,7 +87,7 @@ export async function createOrderAction(formData: {
     const prefix = gameConfig?.orderPrefix || "RBX";
     const orderId = generateOrderId(prefix);
     const code = generateOrderCode(8);
-    const id = uuidv4();
+    const id = randomUUID();
     const proofToken = randomToken();
 
     const newOrder = {

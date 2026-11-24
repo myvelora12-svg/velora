@@ -1,65 +1,81 @@
+"use client";
+
 import { useState } from "react";
-import { UploadCloud, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UploadCloud, Loader2, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 interface Step4Props {
   orderId: string;
   proofToken: string;
+  onSubmitProof: (orderId: string, proofUrl: string, proofToken?: string) => Promise<{ ok: boolean; error?: string }>;
   onSuccess: () => void;
-  onSubmitProof: (orderId: string, proofToken: string) => Promise<{ success: boolean; error?: string }>;
 }
 
-export function Step4UploadProof({ orderId, proofToken, onSuccess, onSubmitProof }: Step4Props) {
+const MAX_BYTES = 4 * 1024 * 1024; // 4MB aman untuk Vercel Serverless (limit payload 4.5MB)
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+export function Step4UploadProof({ orderId, proofToken, onSubmitProof, onSuccess }: Step4Props) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0];
-    if (!selected) return;
+    const f = e.target.files?.[0];
+    if (!f) return;
 
-    if (!["image/jpeg", "image/png", "image/webp"].includes(selected.type)) {
-      setError("Hanya format JPG, PNG, atau WEBP yang diperbolehkan.");
-      return;
-    }
-    if (selected.size > 5 * 1024 * 1024) {
-      setError("Ukuran foto maksimal 5MB.");
+    if (!ALLOWED_TYPES.includes(f.type)) {
+      setError("Format file harus JPG, PNG, atau WEBP.");
+      setFile(null);
+      setPreview(null);
       return;
     }
 
-    setError("");
-    setFile(selected);
-    const reader = new FileReader();
-    reader.onload = () => setPreview(reader.result as string);
-    reader.readAsDataURL(selected);
+    if (f.size > MAX_BYTES) {
+      setError("Ukuran file maksimal 4MB.");
+      setFile(null);
+      setPreview(null);
+      return;
+    }
+
+    setError(null);
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
   };
 
   const handleUploadAndSubmit = async () => {
     if (!file) {
-      setError("Pilih foto bukti transfer terlebih dahulu.");
+      setError("Pilih file bukti transfer terlebih dahulu.");
       return;
     }
 
     setUploading(true);
-    setError("");
+    setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("orderId", orderId);
-      formData.append("proofToken", proofToken);
+      const form = new FormData();
+      form.append("file", file);
 
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || "Gagal mengunggah foto.");
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: form,
+      });
 
-      const result = await onSubmitProof(orderId, proofToken);
-      if (!result.success) throw new Error(result.error || "Gagal menyimpan konfirmasi.");
+      const json = await res.json();
+      if (!res.ok || !json.url) {
+        throw new Error(json.error || "Gagal mengunggah bukti.");
+      }
 
+      const submitRes = await onSubmitProof(orderId, json.url, proofToken);
+      if (!submitRes.ok) {
+        throw new Error(submitRes.error || "Gagal menyimpan konfirmasi.");
+      }
+
+      toast.success("Bukti transfer berhasil dikirim!");
       onSuccess();
     } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan saat upload bukti.");
+      setError(err?.message || "Terjadi kesalahan saat mengunggah.");
     } finally {
       setUploading(false);
     }
@@ -74,12 +90,12 @@ export function Step4UploadProof({ orderId, proofToken, onSuccess, onSubmitProof
 
       {error && (
         <p className="mt-4 flex items-center gap-2 rounded-md border border-red-800/50 bg-red-950/40 px-3 py-2 text-sm text-red-300" role="alert">
-          <AlertCircle className="h-4 w-4 shrink-0 text-red-500" aria-hidden="true" />
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-400" aria-hidden="true" />
           {error}
         </p>
       )}
 
-      <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 bg-zinc-900/80 p-8 text-center transition-colors duration-150 hover:border-red-600 hover:bg-zinc-900">
+      <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#243028] bg-[#111613] p-8 text-center transition-colors duration-150 hover:border-[#00b869] hover:bg-[#161c18]">
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
@@ -91,7 +107,7 @@ export function Step4UploadProof({ orderId, proofToken, onSuccess, onSubmitProof
             <img
               src={preview}
               alt="Preview bukti transfer"
-              className="max-h-56 rounded-md border border-zinc-700 object-contain"
+              className="max-h-56 rounded-md border border-[#243028] object-contain"
             />
             <span className="mt-3 text-sm text-zinc-400">
               Klik untuk mengganti gambar
@@ -99,7 +115,7 @@ export function Step4UploadProof({ orderId, proofToken, onSuccess, onSubmitProof
           </>
         ) : (
           <>
-            <UploadCloud className="h-8 w-8 text-red-500" aria-hidden="true" />
+            <UploadCloud className="h-8 w-8 text-[#00b869]" aria-hidden="true" />
             <span className="mt-3 text-sm font-medium text-white">
               Klik untuk memilih screenshot bukti transfer
             </span>
@@ -115,10 +131,10 @@ export function Step4UploadProof({ orderId, proofToken, onSuccess, onSubmitProof
           type="button"
           disabled={!file || uploading}
           onClick={handleUploadAndSubmit}
-          className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-md shadow-red-950/50 disabled:opacity-50"
+          className="bg-[#00b869] hover:bg-[#009e5a] text-[#08100b] font-bold shadow-md shadow-[#00b869]/20 disabled:opacity-50"
         >
           {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
-          {uploading ? "Mengirim bukti" : "Konfirmasi pembayaran"}
+          {uploading ? "Mengirim bukti..." : "Konfirmasi pembayaran"}
         </Button>
       </div>
     </div>

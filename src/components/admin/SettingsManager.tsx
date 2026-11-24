@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { PricingItem, RekeningItem } from "@/services/config";
-import { UniversalGamePackage } from "@/services/defaults";
+import type { PricingItem, RekeningItem } from "@/services/config";
+import type { UniversalGamePackage } from "@/services/defaults";
 import { saveSettingsAction } from "@/app/actions/settings";
 import { Plus, Trash2, Save, Loader2, Gamepad2 } from "lucide-react";
 import { toast } from "sonner";
@@ -69,8 +69,8 @@ export function SettingsManager({
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       throw new Error("Format harus JPG, PNG, atau WEBP.");
     }
-    if (file.size > 5 * 1024 * 1024) {
-      throw new Error("Ukuran maksimal 5MB.");
+    if (file.size > 4 * 1024 * 1024) {
+      throw new Error("Ukuran maksimal 4MB.");
     }
     const fd = new FormData();
     fd.append("file", file);

@@ -1,4 +1,4 @@
-import { PricingItem } from "@/services/config";
+import type { PricingItem } from "@/services/config";
 import { formatRupiah } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";

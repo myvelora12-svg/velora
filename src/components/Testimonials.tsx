@@ -1,59 +1,126 @@
 "use client";
 
-import { useState } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { useMemo } from "react";
+import { Star, CheckCircle } from "lucide-react";
+import { CloverIcon } from "@/components/ui/CloverLogo";
 
 export interface Testimonial {
   name: string;
   quote: string;
+  game?: string;
   robux?: number;
+  time?: string;
+}
+
+function TestimonialCard({ item }: { item: Testimonial }) {
+  const isUsername = item.name.includes("_") || item.name.includes(".");
+
+  return (
+    <div className="w-[260px] sm:w-[340px] shrink-0 rounded-2xl border border-[#243028] bg-[#161c18] p-4 sm:p-5 shadow-md transition-all duration-300 hover:border-[#00b869]/50 flex flex-col justify-between select-none">
+      <div>
+        {/* Rating + Time */}
+        <div className="flex items-center justify-between gap-2 mb-2.5">
+          <div className="flex items-center gap-0.5 text-amber-400">
+            {Array.from({ length: 5 }, (_, i) => (
+              <Star key={i} className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
+            ))}
+          </div>
+          {item.time && (
+            <span className="text-[11px] font-medium text-zinc-400">
+              {item.time}
+            </span>
+          )}
+        </div>
+
+        {/* Quote */}
+        <blockquote className="text-xs sm:text-sm text-zinc-200 leading-relaxed italic line-clamp-3">
+          “{item.quote}”
+        </blockquote>
+      </div>
+
+      {/* Author Info */}
+      <div className="mt-3.5 pt-3 border-t border-[#243028] flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 truncate">
+          <CheckCircle className="h-3.5 w-3.5 text-[#00b869] shrink-0" />
+          <span
+            className={`text-xs font-bold truncate ${
+              isUsername ? "text-[#34d399] font-mono tracking-tight" : "text-white"
+            }`}
+          >
+            {item.name}
+          </span>
+        </div>
+
+        {/* Game Tag */}
+        {item.game && (
+          <span className="shrink-0 text-[10px] font-semibold text-zinc-400 rounded-md bg-[#111613] px-2 py-0.5 border border-[#243028]">
+            {item.game}
+          </span>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function Testimonials({ items }: { items: Testimonial[] }) {
-  const [index, setIndex] = useState(0);
-  const validItems = Array.isArray(items) ? items.filter((it) => it && (it.quote?.trim() || it.name?.trim())) : [];
+  const validItems = useMemo(() => {
+    return Array.isArray(items)
+      ? items.filter((it) => it && (it.quote?.trim() || it.name?.trim()))
+      : [];
+  }, [items]);
+
   if (!validItems.length) return null;
 
-  const safeIndex = Math.min(index, validItems.length - 1);
-  const item = validItems[safeIndex];
-  const move = (step: number) => setIndex((current) => (current + step + validItems.length) % validItems.length);
+  // Split into 2 rows for bidirectional marquee
+  const mid = Math.ceil(validItems.length / 2);
+  const row1 = validItems.slice(0, mid);
+  const row2 = validItems.slice(mid);
+
+  // Duplicate arrays to achieve seamless infinite looping
+  const marqueeRow1 = [...row1, ...row1];
+  const marqueeRow2 = [...row2, ...row2];
 
   return (
-    <section className="border-t border-border py-14 sm:py-16" aria-label="Ulasan pelanggan">
-      <div className="mx-auto max-w-4xl px-4">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">Dari pelanggan</p>
-            <h2 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Pengalaman setelah transaksi</h2>
-          </div>
-          {validItems.length > 1 && (
-            <div className="flex gap-2">
-              <Button type="button" variant="outline" size="icon" aria-label="Ulasan sebelumnya" onClick={() => move(-1)}>
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button type="button" variant="outline" size="icon" aria-label="Ulasan berikutnya" onClick={() => move(1)}>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
+    <section
+      className="w-full max-w-full min-w-0 overflow-hidden border-t border-[#243028] py-12 sm:py-20 bg-[#111613]"
+      aria-label="Ulasan pelanggan"
+    >
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 mb-8 text-center sm:text-left">
+        <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-bold uppercase tracking-wider text-[#00b869]">
+          <CloverIcon className="h-4 w-4" />
+          <span>Bukti Sosial Komunitas</span>
         </div>
-        <Card className="mt-6">
-          <CardContent className="p-6 sm:p-8">
-            <div className="flex gap-1 text-destructive" aria-label="5 dari 5 bintang">
-              {Array.from({ length: 5 }, (_, i) => <Star key={i} className="h-4 w-4 fill-current" aria-hidden="true" />)}
-            </div>
-            <blockquote className="mt-4 max-w-3xl text-lg leading-8 sm:text-xl">“{item.quote}”</blockquote>
-            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-              <span className="font-semibold">{item.name}</span>
-              {item.robux ? <span className="text-muted-foreground">· {item.robux.toLocaleString("id-ID")} Robux</span> : null}
-            </div>
-            {validItems.length > 1 && (
-              <p className="mt-4 text-xs text-muted-foreground" aria-live="polite">{safeIndex + 1} dari {validItems.length}</p>
-            )}
-          </CardContent>
-        </Card>
+        <h2 className="mt-1.5 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white font-heading">
+          Ulasan Asli Pembeli
+        </h2>
+        <p className="mt-1 text-xs sm:text-sm text-zinc-400 max-w-xl">
+          Pengalaman nyata pelanggan cloverbux saat top up Robux, Diamond, UC & FC Points.
+        </p>
+      </div>
+
+      {/* Marquee Container strictly isolated with overflow-hidden and min-w-0 */}
+      <div className="relative w-full max-w-full min-w-0 overflow-hidden space-y-4">
+        {/* Left & Right Gradient Shadows */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-28 bg-gradient-to-r from-[#111613] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-28 bg-gradient-to-l from-[#111613] to-transparent z-10" />
+
+        {/* Row 1: Leftward Infinite Marquee */}
+        <div className="w-full max-w-full min-w-0 overflow-hidden">
+          <div className="animate-marquee-left flex gap-3.5 sm:gap-4 px-2">
+            {marqueeRow1.map((item, idx) => (
+              <TestimonialCard key={`r1-${idx}`} item={item} />
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2: Rightward Infinite Marquee */}
+        <div className="w-full max-w-full min-w-0 overflow-hidden">
+          <div className="animate-marquee-right flex gap-3.5 sm:gap-4 px-2">
+            {marqueeRow2.map((item, idx) => (
+              <TestimonialCard key={`r2-${idx}`} item={item} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

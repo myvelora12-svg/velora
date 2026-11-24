@@ -7,8 +7,8 @@ import { DEFAULT_ADMIN_WHATSAPP } from "@/services/defaults";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Aktivasi Pesanan - BlackRedRoblox",
-  description: "Cek dan aktivasi nomor pesanan yang diberikan admin.",
+  title: "Aktivasi Pesanan - cloverbux",
+  description: "Cek dan aktivasi nomor pesanan yang diberikan admin cloverbux.",
 };
 
 export default async function AktivasiPage() {

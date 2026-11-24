@@ -13,7 +13,7 @@ const EXT_BY_TYPE: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
 };
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB aman untuk Vercel Serverless payload limit (4.5MB)
 const ASSETS_BUCKET = "assets";
 
 function looksLikeImage(buf: Buffer, type: string): boolean {
