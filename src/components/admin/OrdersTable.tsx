@@ -133,7 +133,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
               </div>
 
               {/* Order Info Grid */}
-              <div className="grid grid-cols-2 gap-2.5 rounded-md bg-stone-50/80 p-2.5 text-xs border border-border/60">
+              <div className="grid grid-cols-2 gap-2.5 rounded-lg bg-secondary/40 p-2.5 text-xs border border-border/80">
                 <div className="space-y-0.5 min-w-0">
                   <span className="text-[11px] text-muted-foreground flex items-center gap-1">
                     <User className="h-3 w-3" /> Pelanggan
@@ -195,7 +195,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-lg border border-border bg-card shadow-xs">
         <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="border-b border-border bg-stone-50 text-muted-foreground">
+          <thead className="border-b border-border bg-secondary/50 text-muted-foreground">
             <tr>
               <th className="p-3.5 font-medium">Order ID</th>
               <th className="p-3.5 font-medium">Pelanggan</th>
@@ -216,7 +216,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
               </tr>
             ) : (
               filteredOrders.map((o) => (
-                <tr key={o.id} className="transition-colors duration-150 hover:bg-stone-50">
+                <tr key={o.id} className="transition-colors duration-150 hover:bg-secondary/40">
                   <td className="p-3.5">
                     <div className="font-mono text-sm font-medium">{o.orderId}</div>
                     <div className="font-mono text-xs text-muted-foreground">Kode: {o.code}</div>
@@ -230,7 +230,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
                       {o.gameUserId || o.robloxUsername || "-"}
                       {o.gameZoneId ? ` (${o.gameZoneId})` : ""}
                     </div>
-                    <span className="inline-block rounded bg-stone-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-stone-600">
+                    <span className="inline-block rounded bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border border-border/60">
                       {o.game || "roblox"}
                     </span>
                   </td>

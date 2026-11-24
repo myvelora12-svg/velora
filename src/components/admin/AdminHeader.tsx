@@ -123,7 +123,7 @@ export function AdminHeader() {
           </div>
 
           {/* Bottom Row: Navigation Tabs */}
-          <nav className="grid grid-cols-2 gap-1.5 rounded-lg border border-border/80 bg-stone-100/80 p-1" aria-label="Menu Admin Mobile">
+          <nav className="grid grid-cols-2 gap-1.5 rounded-lg border border-border/80 bg-secondary/60 p-1" aria-label="Menu Admin Mobile">
             <Link
               href="/admin"
               className={cn(

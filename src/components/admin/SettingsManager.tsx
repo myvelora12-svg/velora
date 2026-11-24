@@ -308,14 +308,16 @@ export function SettingsManager({
           {activeGameTab === "roblox" && (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {pricing.map((p, idx) => (
-                <div key={`${idx}-${p.robux}`} className="rounded-md border border-border bg-stone-50 p-3">
+                <div key={`${idx}-${p.robux}`} className="rounded-lg border border-border/80 bg-secondary/40 p-3.5 space-y-3 transition-colors hover:border-primary/30">
                   <div className="flex items-center justify-between gap-2">
-                    <label htmlFor={`robux-${idx}`} className="text-sm font-semibold">Jumlah Robux</label>
+                    <label htmlFor={`robux-${idx}`} className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Jumlah Robux
+                    </label>
                     <button
                       type="button"
                       aria-label={`Hapus paket ${p.robux} Robux`}
                       onClick={() => handleRemovePricing(idx)}
-                      className="flex h-8 w-8 items-center justify-center text-muted-foreground transition-colors hover:text-destructive cursor-pointer"
+                      className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive cursor-pointer"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -330,17 +332,21 @@ export function SettingsManager({
                       updated[idx].robux = parseInt(e.target.value, 10) || 0;
                       setPricing(updated);
                     }}
-                    className="mt-2"
+                    className="bg-background/90 text-foreground font-mono text-sm border-border/80 focus:border-primary"
                   />
-                  <label htmlFor={`price-${idx}`} className="mt-3 block text-sm font-medium">Harga (Rp)</label>
-                  <Input
-                    id={`price-${idx}`}
-                    type="number"
-                    min="1"
-                    value={p.price}
-                    onChange={(e) => handlePriceChange(idx, parseInt(e.target.value, 10) || 0)}
-                    className="mt-1.5 font-mono"
-                  />
+                  <div>
+                    <label htmlFor={`price-${idx}`} className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Harga (Rp)
+                    </label>
+                    <Input
+                      id={`price-${idx}`}
+                      type="number"
+                      min="1"
+                      value={p.price}
+                      onChange={(e) => handlePriceChange(idx, parseInt(e.target.value, 10) || 0)}
+                      className="bg-background/90 text-foreground font-mono text-sm border-border/80 focus:border-primary"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
@@ -350,13 +356,13 @@ export function SettingsManager({
           {activeGameTab !== "roblox" && (
             <div>
               {currentUniversalPackages.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground border border-dashed rounded-lg">
+                <div className="p-8 text-center text-muted-foreground border border-dashed border-border/80 rounded-lg bg-secondary/20">
                   Belum ada paket untuk game ini. Klik tombol tambah di atas.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {currentUniversalPackages.map((pkg, idx) => (
-                    <div key={`${pkg.id || idx}`} className="rounded-md border border-border bg-stone-50 p-3.5 space-y-2.5">
+                    <div key={`${pkg.id || idx}`} className="rounded-lg border border-border/80 bg-secondary/40 p-3.5 space-y-3 transition-colors hover:border-primary/30">
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-xs font-bold uppercase tracking-wider text-primary">
                           #{idx + 1} {activeGameTab.toUpperCase()}
@@ -365,42 +371,42 @@ export function SettingsManager({
                           type="button"
                           aria-label={`Hapus paket ${pkg.name}`}
                           onClick={() => handleRemoveGamePackage(activeGameTab as any, idx)}
-                          className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:text-destructive cursor-pointer"
+                          className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer transition-colors"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
 
                       <div>
-                        <label className="text-xs font-semibold block">Nama Tampilan Paket</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block mb-1">Nama Tampilan Paket</label>
                         <Input
                           type="text"
                           value={pkg.name}
                           onChange={(e) => handleUpdateGamePackage(activeGameTab as any, idx, "name", e.target.value)}
                           placeholder="Contoh: 86 Diamonds / WDP"
-                          className="mt-1 text-sm"
+                          className="bg-background/90 text-foreground text-sm border-border/80 focus:border-primary"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="text-xs font-medium block">Nominal Angka</label>
+                          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block mb-1">Nominal Angka</label>
                           <Input
                             type="number"
                             min="1"
                             value={pkg.amount}
                             onChange={(e) => handleUpdateGamePackage(activeGameTab as any, idx, "amount", parseInt(e.target.value, 10) || 0)}
-                            className="mt-1 text-sm font-mono"
+                            className="bg-background/90 text-foreground text-sm font-mono border-border/80 focus:border-primary"
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-medium block">Harga (Rp)</label>
+                          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block mb-1">Harga (Rp)</label>
                           <Input
                             type="number"
                             min="1"
                             value={pkg.price}
                             onChange={(e) => handleUpdateGamePackage(activeGameTab as any, idx, "price", parseInt(e.target.value, 10) || 0)}
-                            className="mt-1 text-sm font-mono"
+                            className="bg-background/90 text-foreground text-sm font-mono border-border/80 focus:border-primary"
                           />
                         </div>
                       </div>
@@ -425,14 +431,14 @@ export function SettingsManager({
         </CardHeader>
         <CardContent className="space-y-3">
           {rekening.map((r, idx) => (
-            <div key={idx} className="flex flex-col gap-2 rounded-md border border-border bg-stone-50 p-3 sm:flex-row sm:items-center">
+            <div key={idx} className="flex flex-col gap-2 rounded-lg border border-border/80 bg-secondary/40 p-3 sm:flex-row sm:items-center">
               <Input
                 type="text"
                 aria-label="Nama bank atau e-wallet"
                 placeholder="Nama bank / e-wallet"
                 value={r.bank}
                 onChange={(e) => handleRekeningChange(idx, "bank", e.target.value)}
-                className="sm:w-1/4 text-sm"
+                className="bg-background/90 text-foreground text-sm border-border/80 sm:w-1/4"
               />
               <Input
                 type="text"
@@ -440,7 +446,7 @@ export function SettingsManager({
                 placeholder="Nomor rekening / HP"
                 value={r.nomor}
                 onChange={(e) => handleRekeningChange(idx, "nomor", e.target.value)}
-                className="sm:w-2/4 font-mono text-sm"
+                className="bg-background/90 text-foreground font-mono text-sm border-border/80 sm:w-2/4"
               />
               <Input
                 type="text"
@@ -448,7 +454,7 @@ export function SettingsManager({
                 placeholder="Atas nama"
                 value={r.atasNama}
                 onChange={(e) => handleRekeningChange(idx, "atasNama", e.target.value)}
-                className="sm:w-1/4 text-sm"
+                className="bg-background/90 text-foreground text-sm border-border/80 sm:w-1/4"
               />
               <button
                 type="button"
@@ -506,7 +512,7 @@ export function SettingsManager({
           {bannerImageUrl ? (
             <img src={bannerImageUrl} alt="Preview banner homepage" className="max-h-52 w-full rounded-md border border-border object-cover" />
           ) : (
-            <div className="flex h-28 items-center justify-center rounded-md border border-dashed border-input bg-stone-50 text-sm text-muted-foreground">
+            <div className="flex h-28 items-center justify-center rounded-lg border border-dashed border-border/80 bg-secondary/30 text-sm text-muted-foreground">
               Belum ada banner. Homepage memakai tampilan standar.
             </div>
           )}
@@ -547,11 +553,11 @@ export function SettingsManager({
         </CardHeader>
         <CardContent className="space-y-3">
           {testimonials.length === 0 ? (
-            <p className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
+            <p className="rounded-lg border border-dashed border-border/80 bg-secondary/20 p-4 text-sm text-muted-foreground">
               Belum ada testimoni. Bagian ini tidak ditampilkan di homepage sampai admin menambahkan ulasan.
             </p>
           ) : testimonials.map((item, idx) => (
-            <div key={idx} className="flex flex-col gap-2.5 rounded-md border border-border bg-stone-50 p-3 sm:grid sm:grid-cols-[1fr_2fr_130px_auto] sm:items-center">
+            <div key={idx} className="flex flex-col gap-2.5 rounded-lg border border-border/80 bg-secondary/40 p-3 sm:grid sm:grid-cols-[1fr_2fr_130px_auto] sm:items-center">
               <Input
                 aria-label="Nama pelanggan"
                 placeholder="Nama (dengan izin)"
@@ -561,7 +567,7 @@ export function SettingsManager({
                   next[idx] = { ...next[idx], name: e.target.value };
                   setTestimonials(next);
                 }}
-                className="text-sm"
+                className="bg-background/90 text-foreground text-sm border-border/80"
               />
               <Input
                 aria-label="Isi ulasan"
@@ -572,7 +578,7 @@ export function SettingsManager({
                   next[idx] = { ...next[idx], quote: e.target.value };
                   setTestimonials(next);
                 }}
-                className="text-sm"
+                className="bg-background/90 text-foreground text-sm border-border/80"
               />
               <Input
                 aria-label="Jumlah Robux (opsional)"
@@ -585,7 +591,7 @@ export function SettingsManager({
                   next[idx] = { ...next[idx], robux: parseInt(e.target.value, 10) || undefined };
                   setTestimonials(next);
                 }}
-                className="text-sm font-mono"
+                className="bg-background/90 text-foreground text-sm font-mono border-border/80"
               />
               <button
                 type="button"
@@ -612,9 +618,9 @@ export function SettingsManager({
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div className="shrink-0">
               {qrImageUrl ? (
-                <img src={qrImageUrl} alt="QRIS toko" className="h-40 w-40 rounded-md border border-border object-contain" />
+                <img src={qrImageUrl} alt="QRIS toko" className="h-40 w-40 rounded-md border border-border object-contain bg-white p-2" />
               ) : (
-                <div className="flex h-40 w-40 items-center justify-center rounded-md border border-dashed border-input bg-stone-50 text-center text-sm text-muted-foreground">
+                <div className="flex h-40 w-40 items-center justify-center rounded-lg border border-dashed border-border/80 bg-secondary/30 text-center text-sm text-muted-foreground p-3">
                   Belum ada gambar QRIS
                 </div>
               )}

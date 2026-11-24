@@ -102,7 +102,7 @@ export function PricingGrid({ items }: PricingGridProps) {
           ))}
         </div>
 
-        <div className="mt-8 rounded-lg border border-border bg-stone-50 p-4 sm:flex sm:items-center sm:justify-between">
+        <div className="mt-8 rounded-lg border border-border/80 bg-secondary/40 p-4 sm:flex sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
             Klik paket untuk lanjut ke pemesanan. Harga tampil sebelum Anda membayar.
           </p>

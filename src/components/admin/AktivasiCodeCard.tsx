@@ -42,7 +42,7 @@ export function AktivasiCodeCard({ orderId, initialCode }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-3 rounded-md border border-border bg-stone-50 p-4">
+    <div className="flex flex-col gap-3 rounded-lg border border-border/80 bg-secondary/40 p-4">
       <div className="flex items-center gap-2">
         <KeyRound className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
         <span className="text-sm font-medium">Kode aktivasi</span>
