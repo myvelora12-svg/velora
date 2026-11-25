@@ -120,7 +120,7 @@ export function DynamicCheckoutWizard({
   };
 
   return (
-    <Card className="mx-auto max-w-2xl rounded-2xl p-3 sm:p-7 bg-[#161c18] text-white border border-[#243028] shadow-2xl shadow-black/60 w-full max-w-full min-w-0 overflow-hidden">
+    <Card className="mx-auto max-w-2xl rounded-2xl p-3 sm:p-7 bg-white text-[#47023B] border border-[#EAD6E0] shadow-sm w-full max-w-full min-w-0 overflow-hidden">
       {/* Progress Steps Header */}
       <div className="mb-5 sm:mb-8">
         <ol className="grid grid-cols-5 gap-1 sm:gap-3" aria-label="Progres pemesanan">
@@ -133,8 +133,8 @@ export function DynamicCheckoutWizard({
                   className={cn(
                     "flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full text-[10px] sm:text-xs font-bold transition-all duration-200",
                     isCompletedOrActive
-                      ? "bg-[#00b869] text-[#08100b] shadow-sm shadow-[#00b869]/30"
-                      : "border-2 border-[#243028] bg-[#111613] text-zinc-500"
+                      ? "bg-[#47023B] text-white shadow-xs"
+                      : "border-2 border-[#EAD6E0] bg-[#FBF7F4] text-[#6E3B65]"
                   )}
                 >
                   {index + 1}
@@ -142,7 +142,7 @@ export function DynamicCheckoutWizard({
                 <span
                   className={cn(
                     "w-full truncate text-center text-[9px] sm:text-xs",
-                    isCurrent ? "font-semibold text-white" : isCompletedOrActive ? "text-zinc-300" : "text-zinc-500"
+                    isCurrent ? "font-bold text-[#47023B]" : isCompletedOrActive ? "text-[#47023B]/80 font-medium" : "text-[#6E3B65]/70"
                   )}
                 >
                   {label}
@@ -152,14 +152,14 @@ export function DynamicCheckoutWizard({
           })}
         </ol>
         <div
-          className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#111613] border border-[#243028]"
+          className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#FAF0F5] border border-[#EAD6E0]"
           role="progressbar"
           aria-valuemin={1}
           aria-valuemax={5}
           aria-valuenow={step}
         >
           <div
-            className="h-full bg-[#00b869] transition-all duration-300 ease-out shadow-[0_0_10px_rgba(0,184,105,0.6)]"
+            className="h-full bg-[#FA3890] transition-all duration-300 ease-out"
             style={{ width: `${(step / 5) * 100}%` }}
           />
         </div>
@@ -169,14 +169,14 @@ export function DynamicCheckoutWizard({
       {step === 1 && (
         <div>
           <div className="flex items-center justify-between gap-2 mb-1">
-            <h3 className="text-base sm:text-lg font-semibold text-white font-heading">
+            <h3 className="text-base sm:text-lg font-bold text-[#47023B] font-heading">
               1. Pilih Paket {gameConfig.currencyName}
             </h3>
-            <Badge variant="outline" className="text-[10px] sm:text-xs border-[#243028] bg-[#111613] text-[#00b869] px-2 py-0.5">
+            <Badge variant="outline" className="text-[10px] sm:text-xs border-[#EAD6E0] bg-[#FAF0F5] text-[#47023B] px-2 py-0.5 font-semibold">
               {gameConfig.name}
             </Badge>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400">
+          <p className="text-xs sm:text-sm text-[#6E3B65]">
             Pilih denominasi item yang ingin Anda kirimkan ke akun game.
           </p>
 
@@ -192,12 +192,12 @@ export function DynamicCheckoutWizard({
                   className={cn(
                     "relative rounded-xl p-2.5 sm:p-3.5 text-left transition-all duration-200 cursor-pointer flex flex-col justify-between border min-w-0 overflow-hidden",
                     isSelected
-                      ? "border-[#00b869] bg-[#1c2620] text-white shadow-lg shadow-[#00b869]/10 ring-1 ring-[#00b869]/50"
-                      : "border-[#243028] bg-[#111613] text-zinc-200 hover:border-[#00b869]/40 hover:bg-[#19221d]"
+                      ? "border-[#47023B] bg-[#FAF0F5] text-[#47023B] shadow-sm ring-1 ring-[#FA3890]/60"
+                      : "border-[#EAD6E0] bg-[#FBF7F4] text-[#47023B] hover:border-[#FA3890]/60 hover:bg-[#FAF0F5]/60"
                   )}
                 >
                   <div className="flex items-start justify-between gap-1 w-full">
-                    <span className={cn("text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider", isSelected ? "text-[#00b869]" : "text-zinc-500")}>
+                    <span className={cn("text-[10px] sm:text-[11px] font-bold uppercase tracking-wider", isSelected ? "text-[#47023B]" : "text-[#6E3B65]")}>
                       {gameConfig.shortName}
                     </span>
                     <span
@@ -205,19 +205,19 @@ export function DynamicCheckoutWizard({
                       className={cn(
                         "flex h-4.5 w-4.5 sm:h-5 sm:w-5 items-center justify-center rounded-full border-2 transition-colors shrink-0",
                         isSelected
-                          ? "border-[#00b869] bg-[#00b869] text-[#08100b]"
-                          : "border-zinc-700 bg-zinc-800/60 text-transparent"
+                          ? "border-[#47023B] bg-[#47023B] text-white"
+                          : "border-[#EAD6E0] bg-white text-transparent"
                       )}
                     >
                       <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3" strokeWidth={3} />
                     </span>
                   </div>
 
-                  <div className="mt-1.5 text-sm sm:text-lg font-bold tracking-tight line-clamp-2 text-white">
+                  <div className="mt-1.5 text-sm sm:text-lg font-bold tracking-tight line-clamp-2 text-[#47023B]">
                     {item.name}
                   </div>
 
-                  <div className={cn("mt-1.5 text-xs sm:text-sm font-bold", isSelected ? "text-[#00b869] font-extrabold" : "text-emerald-400")}>
+                  <div className={cn("mt-1.5 text-xs sm:text-sm font-extrabold", isSelected ? "text-[#47023B]" : "text-[#6E3B65]")}>
                     {formatRupiah(item.price)}
                   </div>
                 </button>
@@ -225,10 +225,10 @@ export function DynamicCheckoutWizard({
             })}
           </div>
 
-          <div className="mt-5 sm:mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 sm:pt-4 border-t border-[#243028]">
+          <div className="mt-5 sm:mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 sm:pt-4 border-t border-[#EAD6E0]">
             <div className="flex items-center justify-between sm:justify-start sm:gap-2">
-              <span className="text-xs sm:text-sm text-zinc-400">Total:</span>
-              <span className="font-extrabold text-[#00b869] text-base sm:text-lg">
+              <span className="text-xs sm:text-sm text-[#6E3B65]">Total:</span>
+              <span className="font-extrabold text-[#47023B] text-base sm:text-lg">
                 {selectedPackage.price ? formatRupiah(selectedPackage.price) : "Pilih paket"}
               </span>
             </div>
@@ -236,7 +236,7 @@ export function DynamicCheckoutWizard({
               type="button"
               disabled={!selectedPackage || !selectedPackage.price}
               onClick={() => setStep(2)}
-              className="w-full sm:w-auto h-10 px-5 bg-[#00b869] hover:bg-[#009e5a] text-[#08100b] font-bold text-xs sm:text-sm shadow-md shadow-[#00b869]/20 cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+              className="w-full sm:w-auto h-10 px-5 bg-[#47023B] hover:bg-[#5E074F] text-white font-bold text-xs sm:text-sm shadow-xs cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
             >
               Lanjut ke Data Akun →
             </Button>
@@ -248,23 +248,23 @@ export function DynamicCheckoutWizard({
       {step === 2 && (
         <form onSubmit={handleCreateOrder}>
           <div className="flex items-center justify-between gap-3 mb-1">
-            <h3 className="text-lg font-semibold text-white font-heading">
+            <h3 className="text-lg font-bold text-[#47023B] font-heading">
               2. Masukkan Data Akun {gameConfig.shortName}
             </h3>
-            <span className="text-xs text-zinc-400 font-medium">Langkah 2 dari 5</span>
+            <span className="text-xs text-[#6E3B65] font-medium">Langkah 2 dari 5</span>
           </div>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-[#6E3B65]">
             Isi identitas akun game tempat item akan dikirimkan. Kami tidak pernah meminta password.
           </p>
 
           {/* Guide Banner */}
-          <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-[#243028] bg-[#111613] p-3 text-xs text-zinc-300">
-            <Info className="h-4 w-4 shrink-0 text-[#00b869] mt-0.5" />
+          <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-[#EAD6E0] bg-[#FAF0F5] p-3 text-xs text-[#47023B]">
+            <Info className="h-4 w-4 shrink-0 text-[#FA3890] mt-0.5" />
             <span>{gameConfig.idGuide}</span>
           </div>
 
           {error && (
-            <p className="mt-4 rounded-md border border-red-800/50 bg-red-950/40 px-3 py-2 text-sm text-red-300" role="alert">
+            <p className="mt-4 rounded-md border border-[#C81E4A]/30 bg-[#C81E4A]/10 px-3 py-2 text-sm text-[#C81E4A]" role="alert">
               {error}
             </p>
           )}
@@ -273,8 +273,8 @@ export function DynamicCheckoutWizard({
             {/* Game Specific Fields */}
             {gameConfig.fields.map((field) => (
               <div key={field.key}>
-                <label htmlFor={field.key} className="block text-sm font-medium text-zinc-200">
-                  {field.label} <span className="text-[#00b869]">*</span>
+                <label htmlFor={field.key} className="block text-sm font-semibold text-[#47023B]">
+                  {field.label} <span className="text-[#FA3890]">*</span>
                 </label>
                 <Input
                   id={field.key}
@@ -288,18 +288,18 @@ export function DynamicCheckoutWizard({
                     }))
                   }
                   placeholder={field.placeholder}
-                  className="mt-1.5 bg-[#111613] border-[#243028] text-white placeholder:text-zinc-600 focus-visible:ring-[#00b869] focus-visible:border-[#00b869]"
+                  className="mt-1.5 bg-[#FBF7F4] border-[#EAD6E0] text-[#47023B] placeholder:text-[#6E3B65]/50 focus-visible:ring-[#47023B] focus-visible:border-[#47023B]"
                 />
                 {field.helperText && (
-                  <p className="mt-1 text-xs text-zinc-400">{field.helperText}</p>
+                  <p className="mt-1 text-xs text-[#6E3B65]">{field.helperText}</p>
                 )}
               </div>
             ))}
 
             {/* Buyer Contact Fields */}
             <div>
-              <label htmlFor="buyerName" className="block text-sm font-medium text-zinc-200">
-                Nama Pemesan <span className="text-[#00b869]">*</span>
+              <label htmlFor="buyerName" className="block text-sm font-semibold text-[#47023B]">
+                Nama Pemesan <span className="text-[#FA3890]">*</span>
               </label>
               <Input
                 id="buyerName"
@@ -308,13 +308,13 @@ export function DynamicCheckoutWizard({
                 value={formData.name}
                 onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                 placeholder="Contoh: Budi Santoso"
-                className="mt-1.5 bg-[#111613] border-[#243028] text-white placeholder:text-zinc-600 focus-visible:ring-[#00b869] focus-visible:border-[#00b869]"
+                className="mt-1.5 bg-[#FBF7F4] border-[#EAD6E0] text-[#47023B] placeholder:text-[#6E3B65]/50 focus-visible:ring-[#47023B] focus-visible:border-[#47023B]"
               />
             </div>
 
             <div>
-              <label htmlFor="waNumber" className="block text-sm font-medium text-zinc-200">
-                Nomor WhatsApp Aktif <span className="text-[#00b869]">*</span>
+              <label htmlFor="waNumber" className="block text-sm font-semibold text-[#47023B]">
+                Nomor WhatsApp Aktif <span className="text-[#FA3890]">*</span>
               </label>
               <Input
                 id="waNumber"
@@ -323,23 +323,23 @@ export function DynamicCheckoutWizard({
                 value={formData.whatsapp}
                 onChange={(e) => setFormData((prev) => ({ ...prev, whatsapp: e.target.value }))}
                 placeholder="Contoh: 081234567890"
-                className="mt-1.5 bg-[#111613] border-[#243028] text-white placeholder:text-zinc-600 focus-visible:ring-[#00b869] focus-visible:border-[#00b869]"
+                className="mt-1.5 bg-[#FBF7F4] border-[#EAD6E0] text-[#47023B] placeholder:text-[#6E3B65]/50 focus-visible:ring-[#47023B] focus-visible:border-[#47023B]"
               />
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-xs text-[#6E3B65]">
                 Digunakan untuk notifikasi status pesanan atau jika ada kendala akun.
               </p>
             </div>
           </div>
 
           {/* Selected Summary Card */}
-          <div className="mt-6 rounded-xl border border-[#243028] bg-[#111613] p-3.5 flex items-center justify-between text-sm">
+          <div className="mt-6 rounded-xl border border-[#EAD6E0] bg-[#FAF0F5] p-3.5 flex items-center justify-between text-sm">
             <div>
-              <span className="text-xs text-zinc-400 block">Paket Terpilih:</span>
-              <span className="font-semibold text-white">{selectedPackage.name}</span>
+              <span className="text-xs text-[#6E3B65] block">Paket Terpilih:</span>
+              <span className="font-semibold text-[#47023B]">{selectedPackage.name}</span>
             </div>
             <div className="text-right">
-              <span className="text-xs text-zinc-400 block">Harga:</span>
-              <span className="font-bold text-[#00b869]">{formatRupiah(selectedPackage.price)}</span>
+              <span className="text-xs text-[#6E3B65] block">Harga:</span>
+              <span className="font-bold text-[#47023B]">{formatRupiah(selectedPackage.price)}</span>
             </div>
           </div>
 
@@ -349,14 +349,14 @@ export function DynamicCheckoutWizard({
               variant="outline"
               onClick={() => setStep(1)}
               disabled={submitting}
-              className="border-[#243028] bg-[#111613] text-zinc-300 hover:bg-[#1a231e] hover:text-white"
+              className="border-[#EAD6E0] bg-white text-[#47023B] hover:bg-[#FAF0F5]"
             >
               <ArrowLeft className="h-4 w-4" /> Ganti Paket
             </Button>
             <Button
               type="submit"
               disabled={submitting}
-              className="bg-[#00b869] hover:bg-[#009e5a] text-[#08100b] font-bold shadow-md shadow-[#00b869]/20"
+              className="bg-[#47023B] hover:bg-[#5E074F] text-white font-bold shadow-xs"
             >
               {submitting ? (
                 <>

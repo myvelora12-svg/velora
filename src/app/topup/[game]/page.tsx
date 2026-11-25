@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!config) return { title: "Game Tidak Ditemukan" };
 
   return {
-    title: `Top Up ${config.name} Murah & Cepat - cloverbux`,
-    description: `Beli ${config.currencyName} ${config.name} resmi dan instan di cloverbux. Proses cepat langsung ke akun, pembayaran via QRIS dan Transfer Bank.`,
+    title: `Top Up ${config.name} Murah & Cepat - My Velora`,
+    description: `Beli ${config.currencyName} ${config.name} resmi dan instan di My Velora. Proses cepat langsung ke akun, pembayaran via QRIS dan Transfer Bank.`,
   };
 }
 

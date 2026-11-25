@@ -13,10 +13,10 @@ const LOGOS: Record<string, { src: string; alt: string; title: string }> = {
 };
 
 const BOX =
-  "inline-flex h-11 w-16 sm:w-20 items-center justify-center rounded-xl border border-[#243028] bg-white p-1.5 shadow-sm transition-all hover:border-[#00b869]/60 hover:scale-105";
+  "inline-flex h-10 min-w-[64px] px-3 items-center justify-center rounded-xl border border-[#EAD6E0] bg-[#FBF7F4] transition-colors hover:border-[#FA3890]/60 hover:bg-[#FAF0F5]";
 
 /**
- * Official payment logos only (no text) to trigger the Authority Effect.
+ * Official payment badges with clean, uniform sizing.
  */
 export function PaymentBadge({ method, className = "" }: PaymentBadgeProps) {
   const norm = method.toUpperCase().trim();
@@ -30,10 +30,11 @@ export function PaymentBadge({ method, className = "" }: PaymentBadgeProps) {
 
   if (key === "GOPAY") {
     return (
-      <div className={`${BOX} ${className}`} title="GoPay E-Wallet">
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#00AED6] text-base font-black text-white">
+      <div className={`${BOX} gap-1.5 ${className}`} title="GoPay E-Wallet">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#00AED6] text-xs font-black text-white">
           g
-        </div>
+        </span>
+        <span className="text-xs font-bold text-[#47023B]">GoPay</span>
       </div>
     );
   }
@@ -42,14 +43,13 @@ export function PaymentBadge({ method, className = "" }: PaymentBadgeProps) {
     const l = LOGOS[key];
     return (
       <div className={`${BOX} ${className}`} title={l.title}>
-        <img src={l.src} alt={l.alt} className="h-full w-full object-contain" loading="lazy" />
+        <img src={l.src} alt={l.alt} className="h-5 w-auto max-w-[56px] object-contain" loading="lazy" />
       </div>
     );
   }
 
-  // Fallback for other banks: text only when no logo exists
   return (
-    <div className={`${BOX} text-[10px] font-bold text-zinc-800 ${className}`} title={method}>
+    <div className={`${BOX} text-xs font-bold text-[#47023B] ${className}`} title={method}>
       {method}
     </div>
   );

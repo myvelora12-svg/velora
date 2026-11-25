@@ -1,30 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --background: #111613;
-  --foreground: #f3f4f6;
-  --card: #161c18;
-  --card-foreground: #f3f4f6;
-  --popover: #161c18;
-  --popover-foreground: #f3f4f6;
-  --primary: #00b869;
-  --primary-foreground: #08100b;
-  --secondary: #1b231e;
-  --secondary-foreground: #e5e7eb;
-  --muted: #1e2621;
-  --muted-foreground: #9ca3af;
-  --accent: #1e2621;
-  --accent-foreground: #00b869;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
+  --radius: 0.75rem;
+
+  /* My Velora Ivory & Deep Plum Light-First Surfaces */
+  --background: #FBF7F4;
+  --foreground: #47023B;
+
+  --card: #FFFFFF;
+  --card-foreground: #47023B;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #47023B;
+
+  /* Primary CTA: Deep Plum + White Text */
+  --primary: #47023B;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary Surface: Soft Blush + Deep Plum Text */
+  --secondary: #F5D5E3;
+  --secondary-foreground: #47023B;
+
+  --muted: #F3EAEF;
+  --muted-foreground: #6E3B65;
+
+  /* Accent: Soft Blush surface / Deep Plum text */
+  --accent: #F5D5E3;
+  --accent-foreground: #47023B;
+
+  --destructive: #C81E4A;
+  --destructive-foreground: #FFFFFF;
+
   --success: #00b869;
-  --border: #243028;
-  --input: #243028;
-  --ring: #00b869;
-  --radius: 0.625rem;
+
+  --border: #EAD6E0;
+  --input: #E2C6D5;
+  --ring: #47023B;
 }
 
 @theme inline {
+  /* === Brand Core Palette (My Velora) === */
+  --color-plum: #47023B;
+  --color-plum-hover: #5E074F;
+  --color-plum-muted: #6E3B65;
+  --color-pink: #FA3890;
+  --color-blush: #F5D5E3;
+  --color-blush-soft: #FAF0F5;
+  --color-ivory: #FBF7F4;
+  --color-surface: #FFFFFF;
+
+  /* === Semantic Theme Mapping === */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,12 +70,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+
+  --font-heading: var(--font-montserrat), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-poppins), "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -63,6 +90,7 @@
 }
 
 html {
+  scroll-behavior: smooth;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -87,6 +115,47 @@ h1, h2, h3, h4, h5, h6 {
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+
+/* === My Velora Signature Editorial Utilities === */
+
+.mv-heading-italic {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.mv-corner-frame {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid #EAD6E0;
+}
+
+.mv-corner-frame::before,
+.mv-corner-frame::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.mv-corner-frame::before {
+  top: 6px;
+  left: 6px;
+  border-top: 2.5px solid #FA3890;
+  border-left: 2.5px solid #FA3890;
+}
+
+.mv-corner-frame::after {
+  right: 6px;
+  bottom: 6px;
+  border-right: 2.5px solid #FA3890;
+  border-bottom: 2.5px solid #FA3890;
 }
 
 /* Accordion FAQ */

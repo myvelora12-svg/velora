@@ -11,7 +11,7 @@ export function FloatingWhatsApp({ whatsapp }: { whatsapp: string }) {
 
   return (
     <a
-      href={`https://wa.me/${whatsapp}?text=${encodeURIComponent("Halo cloverbux, saya ingin bertanya soal pembelian top up game.")}`}
+      href={`https://wa.me/${whatsapp}?text=${encodeURIComponent("Halo My Velora, saya ingin bertanya soal pembelian top up game.")}`}
       target="_blank"
       rel="noreferrer"
       aria-label="Chat admin via WhatsApp"

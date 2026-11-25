@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CloverIcon } from "@/components/ui/CloverLogo";
 
 const faqs = [
   {
-    q: "Berapa lama proses pengiriman Robux di cloverbux?",
+    q: "Berapa lama proses pengiriman Robux di My Velora?",
     a: "Setelah bukti transfer diverifikasi admin, pengiriman memakan waktu 5 hingga 30 menit pada jam operasional.",
   },
   {
@@ -28,16 +27,15 @@ export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="w-full max-w-full min-w-0 overflow-hidden border-t border-[#243028] bg-[#111613] py-14 sm:py-16 scroll-mt-16">
+    <section id="faq" className="w-full max-w-full min-w-0 overflow-hidden border-t border-[#EAD6E0] bg-[#FAF0F5]/60 py-14 sm:py-16 scroll-mt-16">
       <div className="mx-auto max-w-3xl px-4">
-        <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#00b869] mb-1">
-          <CloverIcon className="h-3.5 w-3.5" />
+        <div className="text-xs font-bold uppercase tracking-wider text-[#6E3B65] mb-1">
           <span>Bantuan & FAQ</span>
         </div>
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-white font-heading">
+        <h2 className="text-2xl sm:text-3xl text-[#47023B] mv-heading-italic">
           Pertanyaan Umum
         </h2>
-        <div className="mt-6 divide-y divide-[#243028] border-y border-[#243028]">
+        <div className="mt-6 divide-y divide-[#EAD6E0] border-y border-[#EAD6E0] bg-white rounded-2xl px-5 shadow-xs">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
@@ -46,20 +44,20 @@ export function FaqSection() {
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
                   aria-expanded={isOpen}
-                  className="flex w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-sm font-semibold text-white transition-colors duration-150 hover:text-[#00b869]"
+                  className="flex w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-sm font-semibold text-[#47023B] transition-colors duration-150 hover:text-[#5E074F]"
                 >
                   {faq.q}
                   <ChevronDown
                     aria-hidden="true"
                     className={cn(
-                      "h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200",
-                      isOpen && "rotate-180 text-[#00b869]",
+                      "h-4 w-4 shrink-0 text-[#6E3B65] transition-transform duration-200",
+                      isOpen && "rotate-180 text-[#FA3890]",
                     )}
                   />
                 </button>
                 <div className="accordion" data-open={isOpen}>
                   <div>
-                    <p className="pb-4 pr-8 text-sm leading-6 text-zinc-400">{faq.a}</p>
+                    <p className="pb-4 pr-8 text-sm leading-6 text-[#6E3B65]">{faq.a}</p>
                   </div>
                 </div>
               </div>

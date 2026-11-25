@@ -16,10 +16,10 @@ export const DEFAULT_PRICING: PricingItem[] = [
 ];
 
 export const DEFAULT_REKENING: RekeningItem[] = [
-  { bank: "BCA", nomor: "8735123984", atasNama: "CLOVERBUX STORE" },
-  { bank: "BRI", nomor: "019283746519283", atasNama: "CLOVERBUX STORE" },
-  { bank: "DANA", nomor: "081234567890", atasNama: "CLOVERBUX STORE" },
-  { bank: "GoPay", nomor: "081234567890", atasNama: "CLOVERBUX STORE" },
+  { bank: "BCA", nomor: "8735123984", atasNama: "MY VELORA STORE" },
+  { bank: "BRI", nomor: "019283746519283", atasNama: "MY VELORA STORE" },
+  { bank: "DANA", nomor: "081234567890", atasNama: "MY VELORA STORE" },
+  { bank: "GoPay", nomor: "081234567890", atasNama: "MY VELORA STORE" },
 ];
 
 /** Kosong = link WhatsApp disembunyikan sampai admin isi di settings. */
@@ -60,7 +60,7 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     name: "Doni Saputra",
     game: "Free Fire (720 💎)",
     time: "14 menit lalu",
-    quote: "Udah 4x order di cloverbux buat adik, selalu lancar. QRIS langsung kebaca, status order bisa dilacak real-time.",
+    quote: "Udah 4x order di My Velora buat adik, selalu lancar. QRIS langsung kebaca, status order bisa dilacak real-time.",
   },
   {
     name: "alvin.rbx",
@@ -73,7 +73,7 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     name: "Bagus",
     game: "PUBG Mobile (1.000 UC)",
     time: "25 menit lalu",
-    quote: "UC PUBG mendarat kilat. Langsung bisa gacha skin baru. Makasih cloverbux!",
+    quote: "UC PUBG mendarat kilat. Langsung bisa gacha skin baru. Makasih My Velora!",
   },
   {
     name: "Arief Rahman",
@@ -155,14 +155,14 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     name: "Rizky Febrian",
     game: "Mobile Legends (1.000 💎)",
     time: "3 jam lalu",
-    quote: "Beli diamond pas event skin, auto dapet skin impian. Mantul cloverbux.",
+    quote: "Beli diamond pas event skin, auto dapet skin impian. Mantul My Velora.",
   },
   {
     name: "daniellll_",
     game: "Roblox (20.000 Robux)",
     robux: 20000,
     time: "4 jam lalu",
-    quote: "Sultan approved! 20.000 Robux masuk selamat tanpa kendala. Sukses selalu buat cloverbux.",
+    quote: "Sultan approved! 20.000 Robux masuk selamat tanpa kendala. Sukses selalu buat My Velora.",
   },
   {
     name: "Bayu",
@@ -238,7 +238,7 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     name: "Faisal",
     game: "Mobile Legends (1.000 💎)",
     time: "10 jam lalu",
-    quote: "1000 Diamond beres gak nyampe 3 menit. Goks abis cloverbux!",
+    quote: "1000 Diamond beres gak nyampe 3 menit. Goks abis My Velora!",
   },
   {
     name: "Agung Setiawan",
@@ -271,7 +271,7 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     game: "Roblox (4.400 Robux)",
     robux: 4400,
     time: "13 jam lalu",
-    quote: "Keren webnya bernuansa emerald charcoal gini, transaksinya juga sat set.",
+    quote: "Keren webnya elegan dan bersih gini, transaksinya juga sat set.",
   },
   {
     name: "Tegar",
@@ -335,7 +335,7 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     game: "Roblox (6.500 Robux)",
     robux: 6500,
     time: "23 jam lalu",
-    quote: "Sudah order ke-6 kali di cloverbux. Kualitas pelayanan konsisten cepat.",
+    quote: "Sudah order ke-6 kali di My Velora. Kualitas pelayanan konsisten cepat.",
   },
   {
     name: "Maya",
@@ -354,7 +354,7 @@ export const DEFAULT_TESTIMONIALS: DefaultTestimonialItem[] = [
     game: "Roblox (33.500 Robux)",
     robux: 33500,
     time: "1 hari lalu",
-    quote: "Paket 33.500 Robux mendarat aman tanpa kendala sama sekali. Respect buat cloverbux!",
+    quote: "Paket 33.500 Robux mendarat aman tanpa kendala sama sekali. Respect buat My Velora!",
   },
 ];
 

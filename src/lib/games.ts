@@ -44,7 +44,7 @@ export const GAMES: Record<string, GameConfig> = {
     currencyUnit: "R$",
     icon: "🎮",
     logoUrl: "/games/art/roblox.jpg",
-    bannerGradient: "from-[#00b869]/20 via-[#161c18] to-[#111613]",
+    bannerGradient: "from-[#FA3890]/20 via-[#5E074F] to-[#47023B]",
     tagline: "Top up Robux instan via Gamepass & Group Payout",
     idGuide: "Masukkan Username akun Roblox Anda tanpa spasi.",
     fields: [
@@ -69,7 +69,7 @@ export const GAMES: Record<string, GameConfig> = {
     currencyUnit: "💎",
     icon: "⚔️",
     logoUrl: "/games/art/mlbb.png",
-    bannerGradient: "from-blue-900/40 via-[#161c18] to-[#111613]",
+    bannerGradient: "from-blue-900/40 via-[#5E074F] to-[#47023B]",
     tagline: "Top up Diamond & Weekly Diamond Pass resmi & legal",
     idGuide: "User ID (angka 8-10 digit) dan Zone ID (angka dalam kurung 4-5 digit) ada di profil game.",
     fields: [
@@ -103,7 +103,7 @@ export const GAMES: Record<string, GameConfig> = {
     currencyUnit: "UC",
     icon: "🪖",
     logoUrl: "/games/art/pubg.jpg",
-    bannerGradient: "from-amber-900/30 via-[#161c18] to-[#111613]",
+    bannerGradient: "from-amber-900/30 via-[#5E074F] to-[#47023B]",
     tagline: "Isi UC PUBG Mobile langsung ke Character ID Anda",
     idGuide: "Buka profil PUBG Mobile Anda, Character ID (UID) tertera di bawah avatar profil.",
     fields: [
@@ -129,7 +129,7 @@ export const GAMES: Record<string, GameConfig> = {
     currencyUnit: "💎",
     icon: "🔥",
     logoUrl: "/games/art/freefire.webp",
-    bannerGradient: "from-orange-950/40 via-[#161c18] to-[#111613]",
+    bannerGradient: "from-orange-950/40 via-[#5E074F] to-[#47023B]",
     tagline: "Top up FF Diamond & Membership proses kilat",
     idGuide: "Lihat Player ID di profil akun Free Fire Anda (tertera di bawah nickname).",
     fields: [
@@ -155,7 +155,7 @@ export const GAMES: Record<string, GameConfig> = {
     currencyUnit: "⚽",
     icon: "⚽",
     logoUrl: "/games/art/fcmobile.jpg",
-    bannerGradient: "from-emerald-950/40 via-[#161c18] to-[#111613]",
+    bannerGradient: "from-emerald-950/40 via-[#5E074F] to-[#47023B]",
     tagline: "Beli FC Points resmi untuk pack pemain & event terbaru",
     idGuide: "UID Akun dapat dilihat pada menu Settings > Customer Service > UID Akun.",
     fields: [
