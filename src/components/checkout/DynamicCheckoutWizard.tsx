@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatRupiah, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,8 +10,22 @@ import { Step3Payment } from "./Step3Payment";
 import { Step4UploadProof } from "./Step4UploadProof";
 import { Step5Success } from "./Step5Success";
 import { createOrderAction, submitPaymentProofAction } from "@/app/actions/order";
-import { Check, ArrowLeft, Loader2, Info } from "lucide-react";
+import { Check, ArrowLeft, Loader2, Info, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
 import type { GameConfig } from "@/lib/games";
+
+type AccountValidationState =
+  | { state: "idle" }
+  | { state: "loading" }
+  | {
+      state: "valid";
+      nickname: string;
+      username?: string;
+      region?: string;
+      avatarUrl?: string;
+      source: "official" | "community";
+    }
+  | { state: "not_found"; message: string; source: "official" | "community" | "format" }
+  | { state: "unavailable" | "format_only"; message: string };
 
 interface DynamicCheckoutWizardProps {
   gameConfig: GameConfig;
@@ -61,6 +75,90 @@ export function DynamicCheckoutWizard({
   // Created order data
   const [createdOrder, setCreatedOrder] = useState<any>(null);
   const [proofToken, setProofToken] = useState("");
+  const [validation, setValidation] = useState<AccountValidationState>({ state: "idle" });
+  const [retryKey, setRetryKey] = useState(0);
+
+  useEffect(() => {
+    if (step !== 2) return;
+
+    const userId = formData.gameUserId.trim();
+    const zoneId = formData.gameZoneId.trim();
+
+    const meetsThreshold =
+      gameConfig.id === "roblox"
+        ? userId.length >= 3
+        : gameConfig.id === "mlbb"
+        ? userId.length >= 5 && zoneId.length >= 3
+        : userId.length >= 5;
+
+    if (!meetsThreshold) {
+      setValidation({ state: "idle" });
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setValidation({ state: "loading" });
+      try {
+        const res = await fetch("/api/game/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ game: gameConfig.id, userId, zoneId }),
+          signal: controller.signal,
+        });
+
+        const data = await res.json();
+        if (controller.signal.aborted) return;
+
+        if (!res.ok) {
+          setValidation({
+            state: "unavailable",
+            message: data?.error || "Gagal memeriksa akun. Anda tetap bisa melanjutkan pesanan.",
+          });
+          return;
+        }
+
+        if (data.status === "valid" && data.nickname) {
+          setValidation({
+            state: "valid",
+            nickname: data.nickname,
+            username: data.username,
+            region: data.region,
+            avatarUrl: data.avatarUrl,
+            source: data.source === "official" ? "official" : "community",
+          });
+        } else if (data.status === "not_found") {
+          setValidation({
+            state: "not_found",
+            message: data.message || "Akun tidak ditemukan.",
+            source: data.source || "community",
+          });
+        } else if (data.status === "format_only") {
+          setValidation({
+            state: "format_only",
+            message: data.message || "Format ID valid.",
+          });
+        } else {
+          setValidation({
+            state: "unavailable",
+            message:
+              data.message || "Verifikasi otomatis belum tersedia. Anda tetap bisa melanjutkan pesanan.",
+          });
+        }
+      } catch (err: any) {
+        if (err?.name === "AbortError") return;
+        setValidation({
+          state: "unavailable",
+          message: "Gagal memeriksa akun. Anda tetap bisa melanjutkan pesanan.",
+        });
+      }
+    }, 700);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [step, gameConfig.id, formData.gameUserId, formData.gameZoneId, retryKey]);
 
   const steps = [
     `Pilih ${gameConfig.shortName}`,
@@ -86,6 +184,15 @@ export function DynamicCheckoutWizard({
 
     if (!formData.gameUserId.trim()) {
       setError(`${gameConfig.fields[0]?.label || "ID Akun"} wajib diisi.`);
+      return;
+    }
+
+    if (
+      gameConfig.id === "roblox" &&
+      validation.state === "not_found" &&
+      validation.source === "official"
+    ) {
+      setError("Username Roblox tidak ditemukan. Periksa kembali ejaan username Anda.");
       return;
     }
 
@@ -271,30 +378,126 @@ export function DynamicCheckoutWizard({
 
           <div className="mt-5 space-y-4">
             {/* Game Specific Fields */}
-            {gameConfig.fields.map((field) => (
-              <div key={field.key}>
-                <label htmlFor={field.key} className="block text-sm font-semibold text-[#47023B]">
-                  {field.label} <span className="text-[#FA3890]">*</span>
-                </label>
-                <Input
-                  id={field.key}
-                  type={field.type || "text"}
-                  required={field.required}
-                  value={field.key === "gameZoneId" ? formData.gameZoneId : formData.gameUserId}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      [field.key === "gameZoneId" ? "gameZoneId" : "gameUserId"]: e.target.value,
-                    }))
-                  }
-                  placeholder={field.placeholder}
-                  className="mt-1.5 bg-[#FBF7F4] border-[#EAD6E0] text-[#47023B] placeholder:text-[#6E3B65]/50 focus-visible:ring-[#47023B] focus-visible:border-[#47023B]"
-                />
-                {field.helperText && (
-                  <p className="mt-1 text-xs text-[#6E3B65]">{field.helperText}</p>
+            <div
+              className={cn(
+                gameConfig.fields.length === 2
+                  ? "grid grid-cols-1 sm:grid-cols-2 gap-3.5"
+                  : "space-y-4"
+              )}
+            >
+              {gameConfig.fields.map((field) => (
+                <div key={field.key}>
+                  <label htmlFor={field.key} className="block text-sm font-semibold text-[#47023B]">
+                    {field.label} <span className="text-[#FA3890]">*</span>
+                  </label>
+                  <Input
+                    id={field.key}
+                    type={field.type || "text"}
+                    required={field.required}
+                    value={field.key === "gameZoneId" ? formData.gameZoneId : formData.gameUserId}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        [field.key === "gameZoneId" ? "gameZoneId" : "gameUserId"]: e.target.value,
+                      }))
+                    }
+                    placeholder={field.placeholder}
+                    className="mt-1.5 bg-[#FBF7F4] border-[#EAD6E0] text-[#47023B] placeholder:text-[#6E3B65]/50 focus-visible:ring-[#47023B] focus-visible:border-[#47023B]"
+                  />
+                  {field.helperText && (
+                    <p className="mt-1 text-xs text-[#6E3B65]">{field.helperText}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Live Account Validation Banner */}
+            {validation.state === "loading" && (
+              <div
+                aria-live="polite"
+                className="flex items-center gap-2.5 rounded-xl border border-[#EAD6E0] bg-[#FAF0F5] px-3.5 py-2.5 text-xs sm:text-sm text-[#47023B]"
+              >
+                <Loader2 className="h-4 w-4 animate-spin text-[#FA3890] shrink-0" />
+                <span>Memeriksa data akun...</span>
+              </div>
+            )}
+
+            {validation.state === "valid" && (
+              <div
+                aria-live="polite"
+                className="flex items-center gap-3 rounded-xl border border-emerald-500/40 bg-emerald-50 px-3.5 py-2.5 text-xs sm:text-sm text-emerald-900"
+              >
+                {validation.avatarUrl && (
+                  <img
+                    src={validation.avatarUrl}
+                    alt={`Avatar ${validation.nickname}`}
+                    className="h-10 w-10 rounded-full border border-emerald-300 bg-white object-cover shrink-0"
+                  />
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-1.5 font-medium">
+                    <span>Akun ditemukan:</span>
+                    <strong className="font-bold text-emerald-700">{validation.nickname}</strong>
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" aria-hidden="true" />
+                    {validation.username && validation.username !== validation.nickname && (
+                      <span className="text-xs text-emerald-800/80">(@{validation.username})</span>
+                    )}
+                    {validation.region && (
+                      <span className="text-emerald-800">
+                        dari <strong className="font-bold">{validation.region}</strong>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {validation.state === "not_found" && (
+              <div
+                role="alert"
+                className={cn(
+                  "flex items-center justify-between gap-2.5 rounded-xl border px-3.5 py-2.5 text-xs sm:text-sm",
+                  validation.source === "official"
+                    ? "border-[#C81E4A]/40 bg-[#C81E4A]/10 text-[#C81E4A]"
+                    : "border-amber-500/40 bg-amber-50 text-amber-900"
+                )}
+              >
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>{validation.message}</span>
+                </div>
+                {validation.source !== "official" && (
+                  <button
+                    type="button"
+                    onClick={() => setRetryKey((k) => k + 1)}
+                    className="inline-flex items-center gap-1 shrink-0 rounded-lg border border-amber-500/40 bg-white px-2.5 py-1 text-xs font-semibold text-amber-900 hover:bg-amber-100 cursor-pointer"
+                  >
+                    <RefreshCw className="h-3 w-3" /> Cek ulang
+                  </button>
                 )}
               </div>
-            ))}
+            )}
+
+            {(validation.state === "unavailable" || validation.state === "format_only") && (
+              <div
+                aria-live="polite"
+                className="flex items-center justify-between gap-2.5 rounded-xl border border-[#EAD6E0] bg-[#FAF0F5] px-3.5 py-2.5 text-xs sm:text-sm text-[#6E3B65]"
+              >
+                <div className="flex items-start gap-2">
+                  <Info className="h-4 w-4 shrink-0 text-[#47023B] mt-0.5" aria-hidden="true" />
+                  <span>{validation.message}</span>
+                </div>
+                {validation.state === "unavailable" && (
+                  <button
+                    type="button"
+                    onClick={() => setRetryKey((k) => k + 1)}
+                    className="inline-flex items-center gap-1 shrink-0 rounded-lg border border-[#EAD6E0] bg-white px-2.5 py-1 text-xs font-semibold text-[#47023B] hover:bg-[#F5D5E3]/50 cursor-pointer"
+                  >
+                    <RefreshCw className="h-3 w-3" /> Cek ulang
+                  </button>
+                )}
+              </div>
+            )}
 
             {/* Buyer Contact Fields */}
             <div>
