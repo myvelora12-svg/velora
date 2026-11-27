@@ -34,6 +34,7 @@ interface DynamicCheckoutWizardProps {
   qrImageUrl?: string;
   initialPackageId?: string;
   defaultPackages?: Array<{ id: string; name: string; price: number; amount?: number }>;
+  adminWhatsapp?: string;
 }
 
 export function DynamicCheckoutWizard({
@@ -43,6 +44,7 @@ export function DynamicCheckoutWizard({
   qrImageUrl,
   initialPackageId,
   defaultPackages,
+  adminWhatsapp,
 }: DynamicCheckoutWizardProps) {
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
 
@@ -597,7 +599,7 @@ export function DynamicCheckoutWizard({
       )}
 
       {/* Step 5: Success Summary */}
-      {step === 5 && createdOrder && <Step5Success order={createdOrder} />}
+      {step === 5 && createdOrder && <Step5Success order={createdOrder} adminWhatsapp={adminWhatsapp} />}
     </Card>
   );
 }

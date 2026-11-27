@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle, Search, Home } from "lucide-react";
+import { CheckCircle, Search, Home, MessageCircle } from "lucide-react";
 import { formatRupiah, cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -15,19 +15,39 @@ interface Step5Props {
     totalPrice: number;
     robloxUsername?: string;
   };
+  adminWhatsapp?: string;
 }
 
-export function Step5Success({ order }: Step5Props) {
+export function Step5Success({ order, adminWhatsapp = "" }: Step5Props) {
   const accountText = order.gameZoneId
     ? `${order.gameUserId || order.robloxUsername} (Zone: ${order.gameZoneId})`
     : (order.gameUserId || order.robloxUsername || "-");
 
   const itemText = order.itemName || (order.robuxAmount ? `${order.robuxAmount.toLocaleString("id-ID")} Robux` : "-");
+  const gameLabel = order.game ? order.game.toUpperCase() : "ROBLOX";
+
+  const normalizedWa = adminWhatsapp.replace(/[^\d]/g, "").replace(/^0/, "62");
+  const waMessage = [
+    "Halo Admin My Velora, saya mau konfirmasi pembayaran pesanan saya:",
+    "",
+    `• Order ID: ${order.orderId}`,
+    `• Kode Cek: ${order.code}`,
+    `• Game: ${gameLabel}`,
+    `• ID Akun: ${accountText}`,
+    `• Paket: ${itemText}`,
+    `• Total Bayar: ${formatRupiah(order.totalPrice)}`,
+    "",
+    "Bukti transfer sudah saya unggah di website. Mohon segera diproses ya Min, terima kasih!",
+  ].join("\n");
+
+  const waHref = normalizedWa
+    ? `https://wa.me/${normalizedWa}?text=${encodeURIComponent(waMessage)}`
+    : "";
 
   const rows = [
     { label: "Order ID", value: order.orderId, mono: true },
     { label: "Kode cek status", value: order.code, mono: true, accent: true },
-    { label: "Game", value: (order.game ? order.game.toUpperCase() : "ROBLOX") },
+    { label: "Game", value: gameLabel },
     { label: "Akun / Player ID", value: accountText },
     { label: "Paket Item", value: itemText },
     { label: "Total dibayar", value: formatRupiah(order.totalPrice) },
@@ -55,10 +75,34 @@ export function Step5Success({ order }: Step5Props) {
         ))}
       </dl>
 
-      <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+      {waHref && (
+        <div className="mx-auto mt-5 max-w-md rounded-xl border border-[#EAD6E0] bg-[#FAF0F5] p-4 text-center shadow-xs">
+          <p className="text-xs sm:text-sm text-[#47023B] leading-relaxed">
+            Silakan chat admin via WhatsApp untuk konfirmasi pembayaran agar pesanan Anda segera diproses.
+          </p>
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(
+              buttonVariants(),
+              "mt-3 w-full sm:w-auto bg-[#47023B] hover:bg-[#5E074F] text-white font-bold shadow-xs"
+            )}
+          >
+            <MessageCircle className="h-4 w-4" /> Chat Admin via WhatsApp
+          </a>
+        </div>
+      )}
+
+      <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
         <Link
           href={`/cek-order?code=${order.code}`}
-          className={cn(buttonVariants(), "bg-[#47023B] hover:bg-[#5E074F] text-white font-bold shadow-xs")}
+          className={cn(
+            buttonVariants({ variant: waHref ? "outline" : "default" }),
+            waHref
+              ? "border-[#EAD6E0] bg-white text-[#47023B] hover:bg-[#FAF0F5]"
+              : "bg-[#47023B] hover:bg-[#5E074F] text-white font-bold shadow-xs"
+          )}
         >
           <Search className="h-4 w-4" /> Cek status pesanan
         </Link>
